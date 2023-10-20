@@ -1,7 +1,6 @@
 package com.example.march2023.controllers;
 
 import com.example.march2023.dto.CarDto;
-import com.example.march2023.models.Car;
 import com.example.march2023.service.CarService;
 import com.example.march2023.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -27,32 +26,31 @@ public class CarController {
     }
 
     @PostMapping
-    public ResponseEntity<CarDto> create(@RequestBody @Valid CarDto car){
-        return ResponseEntity.status(HttpStatus.CREATED).body(carService.create(car));
+    public ResponseEntity<CarDto> create(@RequestBody @Valid CarDto car) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.carService.create(car));
     }
 
     @JsonView(View.Level1.class)
     @GetMapping("/{id}")
-    public ResponseEntity<CarDto> getById(@PathVariable int id){
-        return ResponseEntity.of(carService.getById(id));
+    public ResponseEntity<CarDto> getById(@PathVariable int id) {
+        return ResponseEntity.of(this.carService.getById(id));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable int id){
-         carService.deleteById(id);
+    public void deleteById(@PathVariable int id) {
+        this.carService.deleteById(id);
     }
 
     @JsonView(View.Level2.class)
     @GetMapping("/power/{value}")
-    public ResponseEntity<List<CarDto>> getByPower(@PathVariable int value){
-       return ResponseEntity.ok(this.carService.getByPower(value));
-
+    public ResponseEntity<List<CarDto>> getByPower(@PathVariable int value) {
+        return ResponseEntity.ok(this.carService.getByPower(value));
     }
 
     @JsonView(View.Level2.class)
     @GetMapping("/producer/{value}")
-    public ResponseEntity<List<CarDto>> getByProducer(@PathVariable String value){
+    public ResponseEntity<List<CarDto>> getByProducer(@PathVariable String value) {
         return ResponseEntity.ok(this.carService.getByProducer(value));
     }
 
