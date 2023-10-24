@@ -6,16 +6,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CarMapper {
-    public CarDto toDto(Car car){
+    public CarDto toDto(Car car) {
         return CarDto.builder()
                 .id(car.getId())
                 .model(car.getModel())
                 .power(car.getPower())
                 .producer(car.getProducer())
+                .photo(car.getPhoto())
                 .build();
     }
 
-    public Car toEntity(CarDto carDto){
+    public Car toEntity(CarDto carDto) {
         Car car = new Car();
         car.setModel(carDto.getModel());
         car.setPower(carDto.getPower());

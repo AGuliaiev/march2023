@@ -9,11 +9,9 @@ import lombok.Data;
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private int id;
     private String model;
     private int power;
     private String producer;
-
-
+    private String photo;
 }
