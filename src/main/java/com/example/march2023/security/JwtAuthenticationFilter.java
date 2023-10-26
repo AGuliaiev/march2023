@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 @RequiredArgsConstructor
@@ -25,14 +24,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String AUTHORIZATION_HEADER_PREFIX = "Bearer ";
 
-
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
 
-        if(StringUtils.startsWithIgnoreCase(authorization, AUTHORIZATION_HEADER_PREFIX)) {
+        if (!StringUtils.startsWithIgnoreCase(authorization, AUTHORIZATION_HEADER_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -47,11 +48,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String username = jwtService.extractUsername(token);
         SecurityContext securityContext = SecurityContextHolder.getContext();
 
-        if (StringUtils.hasText(username) && securityContext.getAuthentication() == null){
-           UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if (StringUtils.hasText(username) && securityContext.getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             Authentication authentication = UsernamePasswordAuthenticationToken
                     .authenticated(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-           securityContext.setAuthentication(authentication);
+            securityContext.setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
